@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>VR Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- A-Frame (WebXR) -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+
+<body>
+  <a-scene
+    vr-mode-ui="enabled: true"
+    embedded
+    background="color: #111">
+
+    <!-- Assets -->
+    <a-assets>
+      <img id="img1" src="https://picsum.photos/1024/1024?1">
+      <img id="img2" src="https://picsum.photos/1024/1024?2">
+      <img id="img3" src="https://picsum.photos/1024/1024?3">
+    </a-assets>
+
+    <!-- Camera -->
+    <a-entity position="0 1.6 0">
+      <a-camera></a-camera>
+    </a-entity>
+
+    <!-- Floor -->
+    <a-plane
+      rotation="-90 0 0"
+      width="20"
+      height="20"
+      color="#222">
+    </a-plane>
+
+    <!-- Gallery Images -->
+    <a-plane
+      src="#img1"
+      position="-2 1.6 -3"
+      width="2"
+      height="2">
+    </a-plane>
+
+    <a-plane
+      src="#img2"
+      position="0 1.6 -3"
+      width="2"
+      height="2">
+    </a-plane>
+
+    <a-plane
+      src="#img3"
+      position="2 1.6 -3"
+      width="2"
+      height="2">
+    </a-plane>
+
+    <!-- Soft light -->
+    <a-light type="ambient" intensity="0.8"></a-light>
+    <a-light type="point" position="0 4 4" intensity="1"></a-light>
+
+  </a-scene>
+</body>
+</html>
