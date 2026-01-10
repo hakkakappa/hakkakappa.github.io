@@ -25,6 +25,35 @@
         this.originalPos = this.el.object3D.position.clone();
         this.isGazed = false;
 
+        <script>
+AFRAME.registerComponent('gallery-ring', {
+  schema: {
+    radius: { type: 'number', default: 5 },
+    height: { type: 'number', default: 0 },
+    imageWidth: { type: 'number', default: 2.2 },
+    imageHeight: { type: 'number', default: 2.2 }
+  },
+
+  init: function () {
+    const images = this.el.querySelectorAll('[data-src]');
+    const count = images.length;
+    const angleStep = (Math.PI * 2) / count;
+
+    images.forEach((el, i) => {
+      const angle = i * angleStep;
+      const x = Math.sin(angle) * this.data.radius;
+      const z = -Math.cos(angle) * this.data.radius;
+
+      el.setAttribute('position', `${x} ${this.data.height} ${z}`);
+      el.setAttribute('rotation', `0 ${THREE.MathUtils.radToDeg(angle)} 0`);
+      el.setAttribute('width', this.data.imageWidth);
+      el.setAttribute('height', this.data.imageHeight);
+    });
+  }
+});
+</script>
+
+
         // Ensure raycaster works for gaze events
         this.el.setAttribute('class', 'clickable');
       },
@@ -85,96 +114,20 @@
     </a-plane>
 
     <!-- Gallery Ring -->
-    <a-entity position="0 1.6 0">
+   <a-entity position="0 1.6 0" gallery-ring>
 
-      <a-plane
-        src="#img1"
-        position="-3 0 -4"
-        rotation="0 30 0"
-        width="2.2"
-        height="4.2"
-        float-gaze-parallax>
-      </a-plane>
+  <a-plane src="#img1" data-src float-gaze-parallax></a-plane>
+  <a-plane src="#img2" data-src float-gaze-parallax></a-plane>
+  <a-plane src="#img3" data-src float-gaze-parallax></a-plane>
+  <a-plane src="#img4" data-src float-gaze-parallax></a-plane>
+  <a-plane src="#img5" data-src float-gaze-parallax></a-plane>
+  <a-plane src="#img6" data-src float-gaze-parallax></a-plane>
+  <a-plane src="#img7" data-src float-gaze-parallax></a-plane>
+  <a-plane src="#img8" data-src float-gaze-parallax></a-plane>
+  <a-plane src="#img9" data-src float-gaze-parallax></a-plane>
+  <a-plane src="#img10" data-src float-gaze-parallax></a-plane>
 
-      <a-plane
-        src="#img2"
-        position="0 0 -5"
-        width="2.5"
-        height="4.5"
-        float-gaze-parallax>
-      </a-plane>
-
-      <a-plane
-        src="#img3"
-        position="3 0 -4"
-        rotation="0 -30 0"
-        width="2.2"
-        height="4.2"
-        float-gaze-parallax>
-      </a-plane>
-
-      <a-plane
-        src="#img4"
-        position="-4 0 -4"
-        rotation="0 30 0"
-        width="2.2"
-        height="4.2"
-        float-gaze-parallax>
-      </a-plane>
-
-      <a-plane
-        src="#img5"
-        position="4 0 -5"
-        width="2.5"
-        height="4.5"
-        float-gaze-parallax>
-      </a-plane>
-
-      <a-plane
-        src="#img6"
-        position="5 0 -4"
-        rotation="0 -30 0"
-        width="2.2"
-        height="4.2"
-        float-gaze-parallax>
-      </a-plane>
-
-      <a-plane
-        src="#img7"
-        position="6 0 -4"
-        rotation="0 -30 0"
-        width="2.2"
-        height="4.2"
-        float-gaze-parallax>
-      </a-plane>
-
-      <a-plane
-        src="#img8"
-        position="-7 0 -4"
-        rotation="0 30 0"
-        width="2.2"
-        height="4.2"
-        float-gaze-parallax>
-      </a-plane>
-
-      <a-plane
-        src="#img9"
-        position="7 0 -5"
-        width="2.5"
-        height="4.5"
-        float-gaze-parallax>
-      </a-plane>
-
-      <a-plane
-        src="#img10"
-        position="8 0 -4"
-        rotation="0 -30 0"
-        width="2.2"
-        height="4.2"
-        float-gaze-parallax>
-      </a-plane>
-
-    </a-entity>
+</a-entity>
 
     <!-- Lighting -->
     <a-light type="ambient" intensity="0.6"></a-light>
