@@ -19,58 +19,54 @@
 
   <!-- Floating + gaze brightening effect -->
   <script>
-AFRAME.registerComponent('float-gaze-parallax', {
-  schema: {
-    scale: { default: 1.15 },
-    floatAmount: { default: 0.15 }
-  },
+    AFRAME.registerComponent('float-gaze-parallax', {
+      schema: {
+        scale: { default: 1.15 },
+        floatAmount: { default: 0.15 }
+      },
 
-  init: function () {
-    this.originalScale = this.el.object3D.scale.clone();
-    this.baseY = this.el.object3D.position.y;
-    this.isGazed = false;
+      init: function () {
+        this.originalScale = this.el.object3D.scale.clone();
+        this.baseY = this.el.object3D.position.y;
+        this.isGazed = false;
 
-    const mesh = this.el.getObject3D('mesh');
-    if (mesh) this.originalColor = mesh.material.color.clone();
-  },
+        const mesh = this.el.getObject3D('mesh');
+        if (mesh) this.originalColor = mesh.material.color.clone();
+      },
 
-  tick: function (time) {
-    // FLOAT (anchored, no accumulation)
-    this.el.object3D.position.y =
-      this.baseY + Math.sin(time / 1000) * this.data.floatAmount * 0.01;
+      tick: function (time) {
+        // FLOAT
+        this.el.object3D.position.y =
+          this.baseY + Math.sin(time / 1000) * this.data.floatAmount;
 
-    // SCALE
-    const targetScale = this.isGazed
-      ? this.originalScale.clone().multiplyScalar(this.data.scale)
-      : this.originalScale;
+        // SCALE
+        const targetScale = this.isGazed
+          ? this.originalScale.clone().multiplyScalar(this.data.scale)
+          : this.originalScale;
+        this.el.object3D.scale.lerp(targetScale, 0.08);
 
-    this.el.object3D.scale.lerp(targetScale, 0.08);
+        // BRIGHTEN
+        const mesh = this.el.getObject3D('mesh');
+        if (!mesh || !this.originalColor) return;
 
-    // BRIGHTEN
-    const mesh = this.el.getObject3D('mesh');
-    if (!mesh || !this.originalColor) return;
+        if (this.isGazed) {
+          mesh.material.color.lerp(new THREE.Color(1, 1, 1), 0.1);
+        } else {
+          mesh.material.color.lerp(this.originalColor, 0.05);
+        }
+      },
 
-    if (this.isGazed) {
-      mesh.material.color.lerp(new THREE.Color(1,1,1), 0.1);
-    } else {
-      mesh.material.color.lerp(this.originalColor, 0.05);
-    }
-  },
+      events: {
+        mouseenter: function () { this.isGazed = true; },
+        mouseleave: function () { this.isGazed = false; }
+      }
+    });
 
-  events: {
-    mouseenter: function () { this.isGazed = true; },
-    mouseleave: function () { this.isGazed = false; }
-  }
-});
-    
-</script>
-  
-  <!-- Circular gallery layout -->
-  <script>
+    // Circular gallery layout
     AFRAME.registerComponent('gallery-ring', {
       schema: {
         radius: { default: 7 },
-        arc: { default: 180 }, // semi-circle in front
+        arc: { default: 180 }, // semi-circle
         height: { default: 2 }
       },
 
@@ -91,12 +87,11 @@ AFRAME.registerComponent('float-gaze-parallax', {
       }
     });
   </script>
-
 </head>
 <body>
   <a-scene vr-mode-ui="enabled: true" shadow="type: pcfsoft" background="color: #111">
 
-    <!-- Preload images -->
+    <!-- Assets -->
     <a-assets>
       <img id="img1" src="image01.jpg">
       <img id="img2" src="image02.jpg">
@@ -118,37 +113,9 @@ AFRAME.registerComponent('float-gaze-parallax', {
     </a-entity>
 
     <!-- Ground -->
-    <a-plane rotation="-90 0 0" width="40" height="40" material= standard color="#0a0a0a" shadow="receive: true"></a-plane>
+    <a-plane rotation="-90 0 0" width="40" height="40"
+             material="shader: standard; color: #0a0a0a"
+             shadow="receive: true"></a-plane>
 
     <!-- Gallery Ring -->
-    <a-entity position="0 1.6 0" gallery-ring>
-      <a-box src="#img1" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img2" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img3" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img4" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img5" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img6" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img7" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img8" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img9" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img10" data-src width="2" height="3" depth="0.2" material="shader: standard; roughness: 1; metalness: 0; emissive: #111; emissiveIntensity: 0.2; color: #ffffff" shadow="cast: true" float-gaze-parallax></a-box>
-    </a-entity>
-
-      <a-light
-        type="directional"
-        position="2 10 5"
-        intensity="3"
-        castShadow="true"
-        shadow-mapWidth="1024"
-        shadow-mapHeight="1024">
-      </a-light>
-
-      <a-light
-        type="ambient"
-        intensity="0.4"
-        color="#ffffff">
-      </a-light>
-
-  </a-scene>
-</body>
-</html>
+    <a-entity position="0 1.6 0"
