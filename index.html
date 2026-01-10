@@ -20,10 +20,7 @@
   <!-- Floating + gaze brightening effect -->
   <script>
     AFRAME.registerComponent('float-gaze-parallax', {
-      schema: {
-        scale: { default: 1.15 },
-        floatAmount: { default: 0.15 }
-      },
+      schema: { scale: { default: 1.15 }, floatAmount: { default: 0.15 } },
 
       init: function () {
         this.originalScale = this.el.object3D.scale.clone();
@@ -64,11 +61,7 @@
 
     // Circular gallery layout
     AFRAME.registerComponent('gallery-ring', {
-      schema: {
-        radius: { default: 7 },
-        arc: { default: 180 }, // semi-circle
-        height: { default: 2 }
-      },
+      schema: { radius: { default: 7 }, arc: { default: 180 }, height: { default: 2 } },
 
       init: function () {
         const items = this.el.querySelectorAll('[data-src]');
@@ -119,36 +112,37 @@
 
     <!-- Gallery Ring -->
     <a-entity position="0 1.6 0" gallery-ring>
-      <a-box src="#img1" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img2" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img3" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img4" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img5" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img6" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img7" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img8" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img9" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
-      <a-box src="#img10" data-src width="2" height="3" depth="0.2"
-             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
-             shadow="cast: true" float-gaze-parallax></a-box>
+      <!-- Each box uses material with src inside to ensure lighting works -->
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img1; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img2; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img3; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img4; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img5; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img6; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img7; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img8; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img9; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
+      <a-box width="2" height="3" depth="0.2"
+             material="src: #img10; shader: standard; roughness:1; metalness:0; color:#ffffff"
+             shadow="cast: true" float-gaze-parallax data-src></a-box>
     </a-entity>
 
     <!-- Lights -->
