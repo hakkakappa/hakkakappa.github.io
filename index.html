@@ -63,16 +63,13 @@ AFRAME.registerComponent('gallery-ring', {
     const arcRad = THREE.MathUtils.degToRad(this.data.arc);
     const step = arcRad / (count - 1);
 
-    items.forEach((el, i) => {
+    items.forEach((el.object3D.lookAt(new THREE.Vector3(0, this.data.height, 0));
       const angle = -arcRad / 2 + i * step;
       const x = Math.sin(angle) * this.data.radius;
       const z = -Math.cos(angle) * this.data.radius;
 
       el.setAttribute('position', `${x} ${this.data.height} ${z}`);
-      el.setAttribute(
-        'rotation',
-        `0 ${THREE.MathUtils.radToDeg(angle)} 0`
-      );
+      el.object3D.lookAt(new THREE.Vector3(0, this.data.height, 0));
     });
   }
 });
