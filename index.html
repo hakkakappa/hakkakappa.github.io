@@ -19,50 +19,52 @@
 
   <!-- Floating + gaze brightening effect -->
   <script>
-    AFRAME.registerComponent('float-gaze-parallax', {
-      schema: {
-        speed: { default: 0.15 },
-        scale: { default: 1.15 },
-        brighten: { default: 0.6 } // how much to brighten on gaze
-      },
+AFRAME.registerComponent('float-gaze-parallax', {
+  schema: {
+    scale: { default: 1.15 },
+    floatAmount: { default: 0.15 }
+  },
 
-      init: function () {
-        this.originalScale = this.el.object3D.scale.clone();
-        this.isGazed = false;
+  init: function () {
+    this.originalScale = this.el.object3D.scale.clone();
+    this.baseY = this.el.object3D.position.y;
+    this.isGazed = false;
 
-        // Store original color
-        const mat = this.el.getObject3D('mesh').material;
-        if (mat) this.originalColor = mat.color.clone();
-      },
+    const mesh = this.el.getObject3D('mesh');
+    if (mesh) this.originalColor = mesh.material.color.clone();
+  },
 
-      tick: function (time) {
-        // Floating motion
-        this.el.object3D.position.y += Math.sin(time / 1000) * 0.0003;
+  tick: function (time) {
+    // FLOAT (anchored, no accumulation)
+    this.el.object3D.position.y =
+      this.baseY + Math.sin(time / 1000) * this.data.floatAmount * 0.01;
 
-        // Scale animation
-        const targetScale = this.isGazed
-          ? this.originalScale.clone().multiplyScalar(this.data.scale)
-          : this.originalScale;
-        this.el.object3D.scale.lerp(targetScale, 0.05);
+    // SCALE
+    const targetScale = this.isGazed
+      ? this.originalScale.clone().multiplyScalar(this.data.scale)
+      : this.originalScale;
 
-        // Brighten on gaze
-        const mat = this.el.getObject3D('mesh')?.material;
-        if (!mat || !this.originalColor) return;
+    this.el.object3D.scale.lerp(targetScale, 0.08);
 
-        if (this.isGazed) {
-          mat.color.lerp(new THREE.Color(1,1,1), this.data.brighten); // brighten towards white
-        } else {
-          mat.color.lerp(this.originalColor, 0.05); // return to original dim color
-        }
-      },
+    // BRIGHTEN
+    const mesh = this.el.getObject3D('mesh');
+    if (!mesh || !this.originalColor) return;
 
-      events: {
-        mouseenter: function () { this.isGazed = true; },
-        mouseleave: function () { this.isGazed = false; }
-      }
-    });
-  </script>
+    if (this.isGazed) {
+      mesh.material.color.lerp(new THREE.Color(1,1,1), 0.1);
+    } else {
+      mesh.material.color.lerp(this.originalColor, 0.05);
+    }
+  },
 
+  events: {
+    mouseenter: function () { this.isGazed = true; },
+    mouseleave: function () { this.isGazed = false; }
+  }
+});
+    
+</script>
+  
   <!-- Circular gallery layout -->
   <script>
     AFRAME.registerComponent('gallery-ring', {
