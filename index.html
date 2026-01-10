@@ -80,3 +80,39 @@
     });
   </script>
 </head>
+<body>
+  <a-scene
+    vr-mode-ui="enabled: true"
+    background="color: #0e0e0e"
+    fog="type: exponential; color: #0e0e0e; density: 0.04">
+
+    <!-- Preload images -->
+    <a-assets>
+      <img id="img1" src="image01.jpg">
+      <img id="img2" src="image02.jpg">
+      <img id="img3" src="image03.jpg">
+      <img id="img4" src="image04.jpg">
+      <img id="img5" src="image05.jpg">
+      <img id="img6" src="image06.jpg">
+      <img id="img7" src="image07.jpg">
+      <img id="img8" src="image08.jpg">
+      <img id="img9" src="image09.jpg">
+      <img id="img10" src="image10.jpg">
+    </a-assets>
+
+    <!-- Camera + gaze cursor -->
+    <a-entity position="0 1.6 0">
+      <a-camera>
+        <a-cursor
+          fuse="true"
+          fuse-timeout="800"
+          color="#ffffff">
+        </a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <!-- Ground -->
+    <a-plane
+      rotation="-90 0 0"
+      wid
+
