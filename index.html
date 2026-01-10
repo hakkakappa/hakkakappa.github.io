@@ -19,59 +19,47 @@
 
   <!-- Floating + gaze effect -->
   <script>
-    AFRAME.registerComponent('float-gaze-parallax', {
-      schema: {
-        speed: { default: 0.15 },
-        scale: { default: 1.15 }
-      },
+AFRAME.registerComponent('float-gaze-parallax', {
+  schema: {
+    speed: { default: 0.15 },
+    scale: { default: 1.15 },
+    brighten: { default: 0.6 } // how much to brighten on gaze
+  },
 
-      init: function () {
-        this.originalScale = this.el.object3D.scale.clone();
-        this.isGazed = false;
-        this.el.setAttribute('class', 'clickable');
-      },
+  init: function () {
+    this.originalScale = this.el.object3D.scale.clone();
+    this.isGazed = false;
 
-      tick: function (time) {
-        this.el.object3D.position.y += Math.sin(time / 1000) * 0.0003;
-        const target = this.isGazed
-          ? this.originalScale.clone().multiplyScalar(this.data.scale)
-          : this.originalScale;
-        this.el.object3D.scale.lerp(target, 0.05);
-      },
+    // Store original color
+    const mat = this.el.getObject3D('mesh').material;
+    this.originalColor = mat.color.clone();
+  },
 
-      events: {
-        mouseenter: function () { this.isGazed = true; },
-        mouseleave: function () { this.isGazed = false; }
-      }
-    });
-  </script>
+  tick: function (time) {
+    // Floating motion
+    this.el.object3D.position.y += Math.sin(time / 1000) * 0.0003;
 
-  <!-- Circular gallery layout -->
-  <script>
-    AFRAME.registerComponent('gallery-ring', {
-      schema: {
-        radius: { default: 8 },
-        arc: { default: 180 }, // semi-circle in front
-        height: { default: 2 }
-      },
+    // Scale animation
+    const targetScale = this.isGazed
+      ? this.originalScale.clone().multiplyScalar(this.data.scale)
+      : this.originalScale;
+    this.el.object3D.scale.lerp(targetScale, 0.05);
 
-      init: function () {
-        const items = this.el.querySelectorAll('[data-src]');
-        const count = items.length;
-        const arcRad = THREE.MathUtils.degToRad(this.data.arc);
-        const step = (count > 1) ? arcRad / (count - 1) : 0;
+    // Brighten on gaze
+    const mat = this.el.getObject3D('mesh').material;
+    if (this.isGazed) {
+      mat.color.lerp(new THREE.Color(1,1,1), this.data.brighten); // brighten towards white
+    } else {
+      mat.color.lerp(this.originalColor, 0.05); // return to original dim color
+    }
+  },
 
-        items.forEach((el, i) => {
-          const angle = -arcRad / 2 + i * step;
-          const x = Math.sin(angle) * this.data.radius;
-          const z = -Math.cos(angle) * this.data.radius;
+  events: {
+    mouseenter: function () { this.isGazed = true; },
+    mouseleave: function () { this.isGazed = false; }
+  }
+});
 
-          el.setAttribute('position', `${x} ${this.data.height} ${z}`);
-          // Make all images face the center
-          el.object3D.lookAt(new THREE.Vector3(0, this.data.height, 0));
-        });
-      }
-    });
   </script>
 
 </head>
