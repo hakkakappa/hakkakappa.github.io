@@ -61,7 +61,7 @@
 
     // Circular gallery layout
     AFRAME.registerComponent('gallery-ring', {
-      schema: { radius: { default: 7 }, arc: { default: 180 }, height: { default: 2 } },
+      schema: { radius: { default: 7 }, arc: { default: 180 }, height: { default: 0 } },
 
       init: function () {
         const items = this.el.querySelectorAll('[data-src]');
@@ -152,7 +152,7 @@
     <a-light type="directional"
              position="0 5 5"
              rotation="-45 -20 0"
-             intensity="2"
+             intensity="0.8"
              shadow="cast: true"
              shadow-mapWidth="2048"
              shadow-mapHeight="2048"></a-light>
