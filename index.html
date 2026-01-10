@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Immersive VR Gallery</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
@@ -17,57 +17,84 @@
     }
   </style>
 
-  <!-- Floating + gaze effect -->
+  <!-- Floating + gaze brightening effect -->
   <script>
     AFRAME.registerComponent('float-gaze-parallax', {
-  schema: {
-    speed: { default: 0.15 },
-    scale: { default: 1.15 },
-    brighten: { default: 0.6 } // how much to brighten on gaze
-  },
+      schema: {
+        speed: { default: 0.15 },
+        scale: { default: 1.15 },
+        brighten: { default: 0.6 } // how much to brighten on gaze
+      },
 
-  init: function () {
-    this.originalScale = this.el.object3D.scale.clone();
-    this.isGazed = false;
+      init: function () {
+        this.originalScale = this.el.object3D.scale.clone();
+        this.isGazed = false;
 
-    // Store original color
-    const mat = this.el.getObject3D('mesh').material;
-    this.originalColor = mat.color.clone();
-  },
+        // Store original color
+        const mat = this.el.getObject3D('mesh').material;
+        if (mat) this.originalColor = mat.color.clone();
+      },
 
-  tick: function (time) {
-    // Floating motion
-    this.el.object3D.position.y += Math.sin(time / 1000) * 0.0003;
+      tick: function (time) {
+        // Floating motion
+        this.el.object3D.position.y += Math.sin(time / 1000) * 0.0003;
 
-    // Scale animation
-    const targetScale = this.isGazed
-      ? this.originalScale.clone().multiplyScalar(this.data.scale)
-      : this.originalScale;
-    this.el.object3D.scale.lerp(targetScale, 0.05);
+        // Scale animation
+        const targetScale = this.isGazed
+          ? this.originalScale.clone().multiplyScalar(this.data.scale)
+          : this.originalScale;
+        this.el.object3D.scale.lerp(targetScale, 0.05);
 
-    // Brighten on gaze
-    const mat = this.el.getObject3D('mesh').material;
-    if (this.isGazed) {
-      mat.color.lerp(new THREE.Color(1,1,1), this.data.brighten); // brighten towards white
-    } else {
-      mat.color.lerp(this.originalColor, 0.05); // return to original dim color
-    }
-  },
+        // Brighten on gaze
+        const mat = this.el.getObject3D('mesh')?.material;
+        if (!mat || !this.originalColor) return;
 
-  events: {
-    mouseenter: function () { this.isGazed = true; },
-    mouseleave: function () { this.isGazed = false; }
-  }
-});
+        if (this.isGazed) {
+          mat.color.lerp(new THREE.Color(1,1,1), this.data.brighten); // brighten towards white
+        } else {
+          mat.color.lerp(this.originalColor, 0.05); // return to original dim color
+        }
+      },
+
+      events: {
+        mouseenter: function () { this.isGazed = true; },
+        mouseleave: function () { this.isGazed = false; }
+      }
+    });
   </script>
 
+  <!-- Circular gallery layout -->
+  <script>
+    AFRAME.registerComponent('gallery-ring', {
+      schema: {
+        radius: { default: 4 },
+        arc: { default: 180 }, // semi-circle in front
+        height: { default: 0 }
+      },
+
+      init: function () {
+        const items = this.el.querySelectorAll('[data-src]');
+        const count = items.length;
+        const arcRad = THREE.MathUtils.degToRad(this.data.arc);
+        const step = (count > 1) ? arcRad / (count - 1) : 0;
+
+        items.forEach((el, i) => {
+          const angle = -arcRad / 2 + i * step;
+          const x = Math.sin(angle) * this.data.radius;
+          const z = -Math.cos(angle) * this.data.radius;
+
+          el.setAttribute('position', `${x} ${this.data.height} ${z}`);
+          el.object3D.lookAt(new THREE.Vector3(0, this.data.height, 0));
+        });
+      }
+    });
+  </script>
 
 </head>
-
 <body>
-  <a-scene vr-mode-ui="enabled: true" background="color: #112">
+  <a-scene vr-mode-ui="enabled: true" background="color: #111">
 
-    <!-- Assets -->
+    <!-- Preload images -->
     <a-assets>
       <img id="img1" src="image01.jpg">
       <img id="img2" src="image02.jpg">
@@ -84,55 +111,36 @@
     <!-- Camera + cursor -->
     <a-entity position="0 1.6 0">
       <a-camera>
-        <a-cursor color="#fff"></a-cursor>
+        <a-cursor fuse="true" fuse-timeout="800" color="#fff"></a-cursor>
       </a-camera>
     </a-entity>
 
     <!-- Ground -->
     <a-plane rotation="-90 0 0" width="40" height="40" color="#111"></a-plane>
 
-    <!-- Gallery Ring with immersive materials -->
-  <a-entity position="0 1.6 0" gallery-ring>
-
-  <a-plane src="#img1" data-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-  <a-plane src="#img2" data-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-  <a-plane src="#img3" data-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-  <a-plane src="#img4" data-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-  <a-plane src="#img5" data-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-  <a-plane src="#img6" data-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-  <a-plane src="#img7" data-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-  <a-plane src="#img8" data-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-  <a-plane src="#img9" data-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-  <a-plane src="#img10" ddata-src float-gaze-parallax width="2" height="3" material="shader: flat; color: #444; side: double">
-</a-plane>
-
-</a-entity>
-
-
-<!-- Ambient light: very dim, just enough to see space -->
-<a-light type="ambient" intensity="0.5" color="#ffffff"></a-light>
-
-
-
-
+    <!-- Gallery Ring -->
+    <a-entity position="0 1.6 0" gallery-ring>
+      <a-plane src="#img1" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+      <a-plane src="#img2" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+      <a-plane src="#img3" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+      <a-plane src="#img4" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+      <a-plane src="#img5" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+      <a-plane src="#img6" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+      <a-plane src="#img7" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+      <a-plane src="#img8" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+      <a-plane src="#img9" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+      <a-plane src="#img10" data-src float-gaze-parallax width="2" height="2"
+        material="shader: flat; color: #444; side: double"></a-plane>
+    </a-entity>
 
   </a-scene>
 </body>
