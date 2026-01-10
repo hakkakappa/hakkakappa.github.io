@@ -82,7 +82,7 @@
   </script>
 </head>
 <body>
-  <a-scene vr-mode-ui="enabled: true" shadow="type: pcfsoft" background="color: #111">
+  <a-scene vr-mode-ui="enabled: true" shadow="type: pcfsoft" background="color: #9d9d9d">
 
     <!-- Assets -->
     <a-assets>
@@ -107,8 +107,8 @@
 
     <!-- Ground -->
     <a-plane rotation="-90 0 0" width="40" height="40"
-             material="shader: standard; color: #303030"
-             shadow="receive: true"></a-plane>
+             material="src: shader: standard; color: #303030"
+             shadow="receive: true" data-scr></a-plane>
 
     <!-- Gallery Ring -->
     <a-entity position="0 1.6 0" gallery-ring>
