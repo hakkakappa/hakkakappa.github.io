@@ -118,4 +118,52 @@
              shadow="receive: true"></a-plane>
 
     <!-- Gallery Ring -->
-    <a-entity position="0 1.6 0"
+    <a-entity position="0 1.6 0" gallery-ring>
+      <a-box src="#img1" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img2" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img3" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img4" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img5" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img6" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img7" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img8" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img9" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img10" data-src width="2" height="3" depth="0.2"
+             material="shader: standard; roughness: 1; metalness: 0; color: #ffffff"
+             shadow="cast: true" float-gaze-parallax></a-box>
+    </a-entity>
+
+    <!-- Lights -->
+    <a-light type="directional"
+             position="2 10 5"
+             rotation="-45 -20 0"
+             intensity="0.8"
+             shadow="cast: true"
+             shadow-mapWidth="1024"
+             shadow-mapHeight="1024"></a-light>
+
+    <a-light type="ambient"
+             intensity="0.4"
+             color="#ffffff"></a-light>
+
+  </a-scene>
+</body>
+</html>
