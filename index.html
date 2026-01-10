@@ -61,7 +61,7 @@
 
     // Circular gallery layout
     AFRAME.registerComponent('gallery-ring', {
-      schema: { radius: { default: 7 }, arc: { default: 270 }, height: { default: 5 } },
+      schema: { radius: { default: 7 }, arc: { default: 270 }, height: { default: 2 } },
 
       init: function () {
         const items = this.el.querySelectorAll('[data-src]');
@@ -82,7 +82,7 @@
   </script>
 </head>
 <body>
-  <a-scene vr-mode-ui="enabled: true" shadow="type: pcfsoft" background="color: #9d9d9d">
+  <a-scene vr-mode-ui="enabled: true" shadow="type: pcfsoft" background="color: #222222">
 
     <!-- Assets -->
     <a-assets>
@@ -99,7 +99,7 @@
     </a-assets>
 
     <!-- Camera + cursor -->
-    <a-entity position="0 3 0">
+    <a-entity position="0 1 0">
       <a-camera>
         <a-cursor fuse="true" fuse-timeout="800" color="#fff"></a-cursor>
       </a-camera>
@@ -152,7 +152,7 @@
     <a-light type="directional"
              position="0 5 5"
              rotation="-45 -20 0"
-             intensity="0.6"
+             intensity="0.8"
              shadow="cast: true"
              shadow-mapWidth="2048"
              shadow-mapHeight="2048"></a-light>
