@@ -17,37 +17,38 @@
   </style>
 
   <script>
-    // Gentle floating animation
-    AFRAME.registerComponent('float', {
-      tick: function (time) {
-        this.el.object3D.position.y += Math.sin(time / 1000) * 0.0005;
+    // Floating + gaze highlight component
+    AFRAME.registerComponent('float-gaze-parallax', {
+      schema: { speed: {type: 'number', default: 0.0005}, scale: {type: 'number', default: 1.2}, parallaxFactor: {type: 'number', default: 0.02} },
+      init: function () {
+        this.originalScale = this.el.object3D.scale.clone();
+        this.originalPos = this.el.object3D.position.clone();
+        this.isGazed = false;
+
+        // Ensure raycaster works for gaze events
+        this.el.setAttribute('class', 'clickable');
+      },
+      tick: function (time, timeDelta) {
+        const camera = document.querySelector('[camera]');
+        const camPos = camera.object3D.position;
+
+        // Floating
+        this.el.object3D.position.y = this.originalPos.y + Math.sin(time / 1000) * this.data.speed;
+
+        // Parallax effect (small shift based on camera)
+        this.el.object3D.position.x = this.originalPos.x + camPos.x * this.data.parallaxFactor;
+        this.el.object3D.position.z = this.originalPos.z + camPos.z * this.data.parallaxFactor;
+
+        // Scale animation for gaze
+        const targetScale = this.isGazed ? this.originalScale.clone().multiplyScalar(this.data.scale) : this.originalScale;
+        this.el.object3D.scale.lerp(targetScale, 0.05);
+      },
+      events: {
+        mouseenter: function () { this.isGazed = true; }.bind(this),
+        mouseleave: function () { this.isGazed = false; }.bind(this)
       }
     });
   </script>
-  
-  <script>
-  // Floating + gaze highlight component
-  AFRAME.registerComponent('float-gaze', {
-    schema: { speed: {type: 'number', default: 0.0005}, scale: {type: 'number', default: 1.2} },
-    init: function () {
-      this.originalScale = this.el.object3D.scale.clone();
-      this.isGazed = false;
-    },
-    tick: function (time, timeDelta) {
-      // Gentle floating
-      this.el.object3D.position.y += Math.sin(time / 1000) * this.data.speed;
-
-      // Smooth scale animation
-      const targetScale = this.isGazed ? this.originalScale.clone().multiplyScalar(this.data.scale) : this.originalScale;
-      this.el.object3D.scale.lerp(targetScale, 0.05);
-    },
-    events: {
-      mouseenter: function () { this.isGazed = true; }.bind(this),
-      mouseleave: function () { this.isGazed = false; }.bind(this)
-    }
-  });
-</script>
-
 </head>
 
 <body>
@@ -79,31 +80,31 @@
     <!-- Gallery Ring -->
     <a-entity position="0 1.6 0">
 
-     <a-plane
-      src="#img1"
-      position="-3 0 -4"
-      rotation="0 30 0"
-      width="2.2"
-      height="2.2"
-      float-gaze>
-    </a-plane>
-    
-    <a-plane
-      src="#img2"
-      position="0 0 -5"
-      width="2.5"
-      height="2.5"
-      float-gaze>
-    </a-plane>
-    
-    <a-plane
-      src="#img3"
-      position="3 0 -4"
-      rotation="0 -30 0"
-      width="2.2"
-      height="2.2"
-      float-gaze>
-    </a-plane>
+      <a-plane
+        src="#img1"
+        position="-3 0 -4"
+        rotation="0 30 0"
+        width="2.2"
+        height="2.2"
+        float-gaze-parallax>
+      </a-plane>
+
+      <a-plane
+        src="#img2"
+        position="0 0 -5"
+        width="2.5"
+        height="2.5"
+        float-gaze-parallax>
+      </a-plane>
+
+      <a-plane
+        src="#img3"
+        position="3 0 -4"
+        rotation="0 -30 0"
+        width="2.2"
+        height="2.2"
+        float-gaze-parallax>
+      </a-plane>
 
     </a-entity>
 
