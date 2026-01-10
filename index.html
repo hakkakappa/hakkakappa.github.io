@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Immersive VR Gallery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
   <style>
@@ -16,123 +15,68 @@
     }
   </style>
 
+  <!-- Floating + gaze effect -->
   <script>
-    // Floating + gaze highlight component
     AFRAME.registerComponent('float-gaze-parallax', {
-      schema: { speed: {type: 'number', default: 0.0005}, scale: {type: 'number', default: 1.2}, parallaxFactor: {type: 'number', default: 0.02} },
+      schema: {
+        speed: { default: 0.15 },
+        scale: { default: 1.15 }
+      },
+
       init: function () {
         this.originalScale = this.el.object3D.scale.clone();
-        this.originalPos = this.el.object3D.position.clone();
         this.isGazed = false;
-
-        <script>
-AFRAME.registerComponent('gallery-ring', {
-  schema: {
-    radius: { type: 'number', default: 5 },
-    height: { type: 'number', default: 0 },
-    imageWidth: { type: 'number', default: 2.2 },
-    imageHeight: { type: 'number', default: 2.2 }
-  },
-
-  init: function () {
-    const images = this.el.querySelectorAll('[data-src]');
-    const count = images.length;
-    const angleStep = (Math.PI * 2) / count;
-
-    images.forEach((el, i) => {
-      const angle = i * angleStep;
-      const x = Math.sin(angle) * this.data.radius;
-      const z = -Math.cos(angle) * this.data.radius;
-
-      el.setAttribute('position', `${x} ${this.data.height} ${z}`);
-      el.setAttribute('rotation', `0 ${THREE.MathUtils.radToDeg(angle)} 0`);
-      el.setAttribute('width', this.data.imageWidth);
-      el.setAttribute('height', this.data.imageHeight);
-    });
-  }
-});
-</script>
-
-
-        // Ensure raycaster works for gaze events
         this.el.setAttribute('class', 'clickable');
       },
-      tick: function (time, timeDelta) {
-        const camera = document.querySelector('[camera]');
-        const camPos = camera.object3D.position;
 
-        // Floating
-        this.el.object3D.position.y = this.originalPos.y + Math.sin(time / 1000) * this.data.speed;
+      tick: function (time) {
+        // gentle floating
+        this.el.object3D.position.y += Math.sin(time / 1000) * 0.0003;
 
-        // Parallax effect (small shift based on camera)
-        this.el.object3D.position.x = this.originalPos.x + camPos.x * this.data.parallaxFactor;
-        this.el.object3D.position.z = this.originalPos.z + camPos.z * this.data.parallaxFactor;
+        // gaze scale
+        const target = this.isGazed
+          ? this.originalScale.clone().multiplyScalar(this.data.scale)
+          : this.originalScale;
 
-        // Scale animation for gaze
-        const targetScale = this.isGazed ? this.originalScale.clone().multiplyScalar(this.data.scale) : this.originalScale;
-        this.el.object3D.scale.lerp(targetScale, 0.05);
+        this.el.object3D.scale.lerp(target, 0.05);
       },
+
       events: {
-        mouseenter: function () { this.isGazed = true; }.bind(this),
-        mouseleave: function () { this.isGazed = false; }.bind(this)
+        mouseenter: function () { this.isGazed = true; },
+        mouseleave: function () { this.isGazed = false; }
+      }
+    });
+  </script>
+
+  <!-- Circular gallery layout -->
+  <script>
+    AFRAME.registerComponent('gallery-ring', {
+      schema: {
+        radius: { default: 5 },
+        height: { default: 0 },
+        imageWidth: { default: 2.2 },
+        imageHeight: { default: 2.2 }
+      },
+
+      init: function () {
+        const items = this.el.querySelectorAll('[data-src]');
+        const count = items.length;
+        const step = (Math.PI * 2) / count;
+
+        items.forEach((el, i) => {
+          const angle = i * step;
+          const x = Math.sin(angle) * this.data.radius;
+          const z = -Math.cos(angle) * this.data.radius;
+
+          el.setAttribute('position', `${x} ${this.data.height} ${z}`);
+          el.setAttribute(
+            'rotation',
+            `0 ${THREE.MathUtils.radToDeg(angle)} 0`
+          );
+          el.setAttribute('width', this.data.imageWidth);
+          el.setAttribute('height', this.data.imageHeight);
+        });
       }
     });
   </script>
 </head>
-
-<body>
-  <a-scene
-    vr-mode-ui="enabled: true"
-    background="color: #0e0e0e"
-    fog="type: exponential; color: #0e0e0e; density: 0.04">
-
-    <!-- Assets -->
-    <a-assets>
-      <img id="img1" src="image01.jpg">
-      <img id="img2" src="image02.jpg">
-      <img id="img3" src="image03.jpg">
-      <img id="img4" src="image04.jpg">
-      <img id="img5" src="image05.jpg">
-      <img id="img6" src="image06.jpg">
-      <img id="img7" src="image07.jpg">
-      <img id="img8" src="image08.jpg">
-      <img id="img9" src="image09.jpg">
-      <img id="img10" src="image10.jpg">
-    </a-assets>
-
-    <!-- Camera -->
-    <a-entity position="0 1.6 0">
-      <a-camera></a-camera>
-    </a-entity>
-
-    <!-- Floor -->
-    <a-plane
-      rotation="-90 0 0"
-      width="30"
-      height="30"
-      color="#111">
-    </a-plane>
-
-    <!-- Gallery Ring -->
-   <a-entity position="0 1.6 0" gallery-ring>
-
-  <a-plane src="#img1" data-src float-gaze-parallax></a-plane>
-  <a-plane src="#img2" data-src float-gaze-parallax></a-plane>
-  <a-plane src="#img3" data-src float-gaze-parallax></a-plane>
-  <a-plane src="#img4" data-src float-gaze-parallax></a-plane>
-  <a-plane src="#img5" data-src float-gaze-parallax></a-plane>
-  <a-plane src="#img6" data-src float-gaze-parallax></a-plane>
-  <a-plane src="#img7" data-src float-gaze-parallax></a-plane>
-  <a-plane src="#img8" data-src float-gaze-parallax></a-plane>
-  <a-plane src="#img9" data-src float-gaze-parallax></a-plane>
-  <a-plane src="#img10" data-src float-gaze-parallax></a-plane>
-
-</a-entity>
-
-    <!-- Lighting -->
-    <a-light type="ambient" intensity="0.6"></a-light>
-    <a-light type="point" position="0 3 2" intensity="0.8"></a-light>
-
-  </a-scene>
-</body>
-</html>
