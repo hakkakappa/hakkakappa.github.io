@@ -19,48 +19,44 @@
 
   <!-- Floating + gaze effect -->
   <script>
-AFRAME.registerComponent('float-gaze-parallax', {
-  schema: {
-    speed: { default: 0.15 },
-    scale: { default: 1.15 },
-    brighten: { default: 0.6 } // how much to brighten on gaze
+    AFRAME.registerComponent('float-gaze-parallax', {
+      schema: {
+        speed: { default: 0.15 },
+        scale: { default: 1.15 },
+        brighten: { default: 0.6 } // how much to brighten on gaze
   },
 
-  init: function () {
-    this.originalScale = this.el.object3D.scale.clone();
-    this.isGazed = false;
-
-    // Store original color
+      init: function () {
+        this.originalScale = this.el.object3D.scale.clone();
+        this.isGazed = false;
+        // Store original color
     const mat = this.el.getObject3D('mesh').material;
     this.originalColor = mat.color.clone();
   },
+        this.el.setAttribute('class', 'clickable');
+      },
 
-  tick: function (time) {
-    // Floating motion
-    this.el.object3D.position.y += Math.sin(time / 1000) * 0.0003;
-
-    // Scale animation
-    const targetScale = this.isGazed
-      ? this.originalScale.clone().multiplyScalar(this.data.scale)
-      : this.originalScale;
-    this.el.object3D.scale.lerp(targetScale, 0.05);
-
-    // Brighten on gaze
+      tick: function (time) {
+        this.el.object3D.position.y += Math.sin(time / 1000) * 0.0003;
+        const target = this.isGazed
+          ? this.originalScale.clone().multiplyScalar(this.data.scale)
+          : this.originalScale;
+        this.el.object3D.scale.lerp(target, 0.05);
+     // Brighten on gaze
     const mat = this.el.getObject3D('mesh').material;
     if (this.isGazed) {
       mat.color.lerp(new THREE.Color(1,1,1), this.data.brighten); // brighten towards white
     } else {
       mat.color.lerp(this.originalColor, 0.05); // return to original dim color
     }
-  },
 
-  events: {
-    mouseenter: function () { this.isGazed = true; },
-    mouseleave: function () { this.isGazed = false; }
-  }
-});
-
+      events: {
+        mouseenter: function () { this.isGazed = true; },
+        mouseleave: function () { this.isGazed = false; }
+      }
+    });
   </script>
+
 
 </head>
 
