@@ -94,7 +94,7 @@ AFRAME.registerComponent('float-gaze-parallax', {
 
 </head>
 <body>
-  <a-scene vr-mode-ui="enabled: true" background="color: #111">
+  <a-scene vr-mode-ui="enabled: true" shadow="type: pcfsoft" background="color: #111">
 
     <!-- Preload images -->
     <a-assets>
@@ -118,21 +118,30 @@ AFRAME.registerComponent('float-gaze-parallax', {
     </a-entity>
 
     <!-- Ground -->
-    <a-plane rotation="-90 0 0" width="40" height="40" color="#111"></a-plane>
+    <a-plane rotation="-90 0 0" width="40" height="40" color="#111" shadow="receive: true"></a-plane>
 
     <!-- Gallery Ring -->
     <a-entity position="0 1.6 0" gallery-ring>
-      <a-box src="#img1" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
-      <a-box src="#img2" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
-      <a-box src="#img3" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
-      <a-box src="#img4" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
-      <a-box src="#img5" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
-      <a-box src="#img6" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
-      <a-box src="#img7" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
-      <a-box src="#img8" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
-      <a-box src="#img9" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
-      <a-box src="#img10" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" float-gaze-parallax></a-box>
+      <a-box src="#img1" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img2" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img3" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img4" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img5" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img6" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img7" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img8" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img9" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
+      <a-box src="#img10" data-src width="2" height="3" depth="0.08" material="shader: flat; color: #444" shadow="cast: true" float-gaze-parallax></a-box>
     </a-entity>
+
+      <a-light
+        type="directional"
+        position="0 6 3"
+        intensity="0.3"
+        castShadow="true"
+        shadow-mapWidth="2048"
+        shadow-mapHeight="2048">
+      </a-light>
 
   </a-scene>
 </body>
