@@ -49,36 +49,34 @@
   </script>
 
   <!-- Circular gallery layout -->
-  <script>
-    AFRAME.registerComponent('gallery-ring', {
-      schema: {
-        radius: { default: 5 },
-        height: { default: 0 },
-        imageWidth: { default: 2.2 },
-        imageHeight: { default: 2.2 }
-      },
+<script>
+AFRAME.registerComponent('gallery-ring', {
+  schema: {
+    radius: { default: 4 },
+    arc: { default: 180 }, // degrees
+    height: { default: 0 }
+  },
 
-      init: function () {
-        const items = this.el.querySelectorAll('[data-src]');
-        const count = items.length;
-        const step = (Math.PI * 2) / count;
+  init: function () {
+    const items = this.el.querySelectorAll('[data-src]');
+    const count = items.length;
+    const arcRad = THREE.MathUtils.degToRad(this.data.arc);
+    const step = arcRad / (count - 1);
 
-        items.forEach((el, i) => {
-          const angle = i * step;
-          const x = Math.sin(angle) * this.data.radius;
-          const z = -Math.cos(angle) * this.data.radius;
+    items.forEach((el, i) => {
+      const angle = -arcRad / 2 + i * step;
+      const x = Math.sin(angle) * this.data.radius;
+      const z = -Math.cos(angle) * this.data.radius;
 
-          el.setAttribute('position', `${x} ${this.data.height} ${z}`);
-          el.setAttribute(
-            'rotation',
-            `0 ${THREE.MathUtils.radToDeg(angle)} 0`
-          );
-          el.setAttribute('width', this.data.imageWidth);
-          el.setAttribute('height', this.data.imageHeight);
-        });
-      }
+      el.setAttribute('position', `${x} ${this.data.height} ${z}`);
+      el.setAttribute(
+        'rotation',
+        `0 ${THREE.MathUtils.radToDeg(angle)} 0`
+      );
     });
-  </script>
+  }
+});
+</script>
 </head>
 
 <body>
