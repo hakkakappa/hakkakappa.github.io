@@ -103,24 +103,55 @@
     <!-- Ground -->
     <a-plane rotation="-90 0 0" width="40" height="40" color="#111"></a-plane>
 
-    <!-- Gallery Ring -->
-    <a-entity position="0 1.6 0" gallery-ring>
-      <a-plane src="#img1" material="shader: flat" data-src float-gaze-parallax width="2" height="3"></a-plane>
-      <a-plane src="#img2" data-src float-gaze-parallax width="2" height="3"></a-plane>
-      <a-plane src="#img3" data-src float-gaze-parallax width="2" height="3"></a-plane>
-      <a-plane src="#img4" data-src float-gaze-parallax width="2" height="3"></a-plane>
-      <a-plane src="#img5" data-src float-gaze-parallax width="2" height="3"></a-plane>
-      <a-plane src="#img6" data-src float-gaze-parallax width="2" height="3"></a-plane>
-      <a-plane src="#img7" data-src float-gaze-parallax width="2" height="3"></a-plane>
-      <a-plane src="#img8" data-src float-gaze-parallax width="2" height="3"></a-plane>
-      <a-plane src="#img9" data-src float-gaze-parallax width="2" height="3"></a-plane>
-      <a-plane src="#img10" data-src float-gaze-parallax width="2" height="3"></a-plane>
-    </a-entity>
+    <!-- Gallery Ring with immersive materials -->
+  <a-entity position="0 1.6 0" gallery-ring>
+
+  <a-plane src="#img1" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+  <a-plane src="#img2" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+  <a-plane src="#img3" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+  <a-plane src="#img4" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+  <a-plane src="#img5" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+  <a-plane src="#img6" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+  <a-plane src="#img7" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+  <a-plane src="#img8" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+  <a-plane src="#img9" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+  <a-plane src="#img10" data-src float-gaze-parallax width="2" height="3"
+    material="emissive: #ffffff; emissiveIntensity: 0.25; metalness: 0.2; roughness: 0.4; side: double">
+  </a-plane>
+
+</a-entity>
+
 
     <!-- Lighting -->
     <a-light type="ambient" intensity="0.1"></a-light>
     <a-light type="point" position="0 4 4" intensity="0.8"></a-light>
-    <a-light type="point" position="0 2 -5" intensity="0.6" color="#ffffff"></a-light>
 
 
   </a-scene>
