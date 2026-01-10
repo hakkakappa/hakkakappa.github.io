@@ -81,23 +81,10 @@
   </script>
 </head>
 <body>
-  <!-- Gallery Ring -->
-<a-entity position="0 1.6 0" gallery-ring>
+<a-scene
+    vr-mode-ui="enabled: true"
+    background="color: #222">
 
-  <a-plane src="#img1" data-src width="2" height="2"></a-plane>
-  <a-plane src="#img2" data-src width="2" height="2"></a-plane>
-  <a-plane src="#img3" data-src width="2" height="2"></a-plane>
-  <a-plane src="#img4" data-src width="2" height="2"></a-plane>
-  <a-plane src="#img5" data-src width="2" height="2"></a-plane>
-  <a-plane src="#img6" data-src width="2" height="2"></a-plane>
-  <a-plane src="#img7" data-src width="2" height="2"></a-plane>
-  <a-plane src="#img8" data-src width="2" height="2"></a-plane>
-  <a-plane src="#img9" data-src width="2" height="2"></a-plane>
-  <a-plane src="#img10" data-src width="2" height="2"></a-plane>
-
-</a-entity>
-
-    
     <!-- Preload images -->
     <a-assets>
       <img id="img1" src="image01.jpg">
@@ -112,21 +99,41 @@
       <img id="img10" src="image10.jpg">
     </a-assets>
 
-    <!-- Camera + gaze cursor -->
+    <!-- Camera + cursor -->
     <a-entity position="0 1.6 0">
       <a-camera>
-        <a-cursor
-          fuse="true"
-          fuse-timeout="800"
-          color="#ffffff">
-        </a-cursor>
+        <a-cursor color="#fff"></a-cursor>
       </a-camera>
     </a-entity>
 
     <!-- Ground -->
     <a-plane
       rotation="-90 0 0"
-      wid
-</a-scene> 
+      width="40"
+      height="40"
+      color="#111">
+    </a-plane>
+
+    <!-- Gallery Ring -->
+    <a-entity position="0 1.6 0" gallery-ring>
+
+      <a-plane src="#img1" data-src width="2" height="2"></a-plane>
+      <a-plane src="#img2" data-src width="2" height="2"></a-plane>
+      <a-plane src="#img3" data-src width="2" height="2"></a-plane>
+      <a-plane src="#img4" data-src width="2" height="2"></a-plane>
+      <a-plane src="#img5" data-src width="2" height="2"></a-plane>
+      <a-plane src="#img6" data-src width="2" height="2"></a-plane>
+      <a-plane src="#img7" data-src width="2" height="2"></a-plane>
+      <a-plane src="#img8" data-src width="2" height="2"></a-plane>
+      <a-plane src="#img9" data-src width="2" height="2"></a-plane>
+      <a-plane src="#img10" data-src width="2" height="2"></a-plane>
+
+    </a-entity>
+
+    <!-- Lighting -->
+    <a-light type="ambient" intensity="0.7"></a-light>
+    <a-light type="point" position="0 4 4" intensity="0.8"></a-light>
+
+  </a-scene>
     </body>
     </html>
